@@ -1,0 +1,25 @@
+#from Cheetah.Template import Template
+#extends Template
+
+
+#set $page_title = "Hello"
+
+<!doctype html>
+<head>
+<title>$page_title</title>
+<link rel="stylesheet" type="text/css" href="/pm//assets/js/lib/Cesium-1.94.3/Build/Cesium/Widgets/widgets.css"></link>
+<link rel="stylesheet" type="text/css" href="./main.css"></link>
+</head>
+<body>
+<div>
+<h3>Please enter reference number</h3>
+<input id="refer" type="number" />
+<button id="submit">Submit</button>
+</div>
+<div id="cesiumContainer"></div>
+
+<script src="/pm//assets/js/lib/jquery/jquery-2.1.3.min.js"></script>
+<script src="/pm//assets/js/lib/Cesium-1.94.3/Build/Cesium/Cesium.js"></script>
+<script src="/pm//assets/js/ctiles.js"></script>
+</body>
+</html>
