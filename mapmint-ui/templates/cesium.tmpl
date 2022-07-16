@@ -1,25 +1,336 @@
 #from Cheetah.Template import Template
 #extends Template
+#encoding UTF-8
+#from Skeleton_bs import Skeleton_bs
+#extends Skeleton_bs
+
+#attr $mmodule = "Manager"
+
+#attr $ocss = []
+
+#def istyles
+<link rel="stylesheet" type="text/css" href="$conf["main"]["publicationUrl"]/assets/css/font-mfizz.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.8/css/jquery.dataTables.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.0.0/css/buttons.dataTables.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/colreorder/1.2.0/css/colReorder.dataTables.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/1.0.7/css/responsive.dataTables.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.0.0/css/select.dataTables.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/rowreorder/1.0.0/css/rowReorder.dataTables.min.css" />
+<link rel="stylesheet" href="$conf["main"]["publicationUrl"]/assets/css/jquery.splitter.css"/>
+<link rel="stylesheet" href="$conf["main"]["publicationUrl"]/css/ol.css"/>
+<link rel="stylesheet" href="$conf["main"]["publicationUrl"]/assets/css/bootstrap-colorpicker.min.css"/>
+<link rel="stylesheet" type="text/css" href="/pm//assets/js/lib/Cesium-1.94.3/Build/Cesium/Widgets/widgets.css" />
+<link rel="stylesheet" type="text/css" href="./main.css" />
+
+#end def
+
+#def page_title
+MapMint: $mmodule
+#end def
+
+#def printAdder($obj)
+     <#if "ltype" in $obj.keys()#$obj["ltype"]#else#li#end if# class="hide" id="$obj["id"]">
+       <div class="padder">
+	 <h4>$obj["title"]</h4>
+	 <hr />
+       </div>
+       <div class="input-group">
+	 <input class="form-control" id="$obj["id"]" placeholder="$obj["placeholder"]" type="text" />
+	 <span class="input-group-btn" title="$obj["title"]" rel="tooltip">
+	   <button class="btn btn-default" id="$obj["action"]["name"]" onclick="app.basic('$(obj["action"]["name"])',\$(this).parent().prev());" type="button">$obj["action"]["title"]</button>
+	 </span>
+       </div>   
+     </#if "ltype" in $obj.keys()#$obj["ltype"]#else#li#end if#>
+#end def
+
+#def admin_menu
+     <li class="dropdown">
+       <a class="dropdown-toggle" data-toggle="dropdown" href="#empty">
+         <img width="24" height="24" id="sbl" class="img-responsive blp" src="http://a.tile.openstreetmap.org/0/0/0.png" /> <i class="fa fa-caret-down"></i>
+       </a>
+       <ul class="dropdown-menu dropdown-bl">
+	 <li><a href="#"><img width="24" height="24" class="img-responsive blp" src="http://a.tile.openstreetmap.org/0/0/0.png" /> OpenStreetMap</a>
+	 </li>
+	 <li><a href="#"><img width="24" height="24" class="img-responsive blp" src="http://a.tile.openstreetmap.fr/hot//0/0/0.png" />  OpenStreetMap HOT</a>
+	 </li>
+	 <li><a href="#"><img width="24" height="24" class="img-responsive blp" src="http://maps.wikimedia.org/osm-intl/0/0/0.png" />  OpenCycleMap</a>
+	 </li>
+	 <li class="divider"></li>
+	 <li><a href="#"><img width="24" height="24" id="blcolpicker" class="img-responsive blp" src="http://placehold.it/24/000000/000000/" /> $zoo._("Colored base layer")</a>
+	 </li>
+       </ul>
+       <!-- /.dropdown-user -->
+     </li>
+#end def
+
+#def mmenu
+ <ul class="nav nav-first-level collapse in">
+##   <li>
+##     <div class="input-group">
+##       <span class="input-group-btn" title="$zoo._("Open Map")" rel="tooltip">
+##        <button id="mm_loadMapToggler" class="btn btn-default" type="button" href="#mm_loadMap"><i class="fa fa-map-o br"></i> </button>
+##       </span>
+##       <input id="save-map-orig" type="hidden" value="$conf["senv"]["last_map"]" />
+##       <input class="form-control" id="save-map" placeholder="$zoo._("Map Name")"
+##       type="text" value="$conf["senv"]["last_map"]" />
+##       <span class="input-group-btn" title="$zoo._("Save Map")" rel="tooltip">
+##        <button class="btn btn-default" type="button">$zoo._("Save")</button>
+##       </span>
+##     </div>
+##   </li>
+##   <li class="active" id="mm_loadMap">
+##     <div class="input-group">
+##       <input class="form-control" id="load-map" placeholder="$zoo._("Search a Map")"
+##       type="text" />
+##       <span class="input-group-btn" title="$zoo._("Load Map")" rel="tooltip">
+##        <button class="btn btn-default disabled" type="button">$zoo._("Load")</button>
+##       </span>
+##     </div>    
+##   </li>
+  <li class="active" id="cesiumswitcher">
+  <a href="cesium"><i class="fa fa-cube"></i></i>  <span class="fa arrow"></span>Cesium 3</a>
+       <ul class="nav nav-first-level">
+     <li>
+       <div class="input-group">
+      <input class="form-control" id="cesiumResource" type="number" placeholder="Enter Resource ID"
+      type="text" />
+      <span class="input-group-btn" title="Load" rel="tooltip">
+       <button class="btn btn-default" type="button" id="cesiumLoad">Load</button>
+      </span>
+    </div> 
+
+     </li>
+	 </ul>
+  </li>
+  
+
+#end def
+
+#def body
+#import zoo
 
 
-#set $page_title = "Hello"
+#def printTabHeader(id,title,font,classe)
+<li role="presentation" #if $classe is not None#class="$classe"#end if#>
+  <a id="$(id)_Toggler" href="#$id" aria-controls="home" role="tab" data-toggle="tab">
+    <i class="#if $font.count("fa-")#fa#end if# $font fa-fw"></i>
+    <span class="hidden-xs hidden-sm hidden-md">
+      $title
+    </span>
+  </a>
+</li>
+#end def
 
-<!doctype html>
-<head>
-<title>$page_title</title>
-<link rel="stylesheet" type="text/css" href="/pm//assets/js/lib/Cesium-1.94.3/Build/Cesium/Widgets/widgets.css"></link>
-<link rel="stylesheet" type="text/css" href="./main.css"></link>
-</head>
-<body>
-<div>
-<h3>Please enter reference number</h3>
-<input id="refer" type="number" />
-<button id="submit">Submit</button>
-</div>
-<div id="cesiumContainer"></div>
+        <div id="manaMap" class="col-mxd-12" style="padding:2rem;margin:0;">
+        
+	##   <div id="manaLayerOrder" class="col-sm-6 collapse myWell">
+	##     <ul class="nav nav-tabs" role="tablist">
+	##       $printTabHeader("mm_layer_order_display",$zoo._("Layer Order"),"mm  mm-layers-order",None)
+	##       $printTabHeader("mm_layer_legend_display",$zoo._("Legend"),"mm mm-legend",None)
+	##       <li class="pull-right">
+	##     <a href="#" data-toogle="tooltip" title="Close" class="menu-toggle grey" onclick="\$(this).parent().parent().parent().next().next().toggleClass('col-sm-6');\$(this).parent().parent().parent().next().next().toggleClass('col-sm-12');\$(this).parent().parent().parent().hide();console.log(app);app.map().updateSize();"><i class="fa fa-close"></i></a>
+	##     </li>
+	##     </ul>
+	##     <div class="tab-content">
+	##       <div role="tabpanel" class="tab-pane active" id="mm_layer_order_display">
+	##       </div>
+	##       <div role="tabpanel" class="tab-pane" id="mm_layer_legend_display">
+	##       </div>
+	##     </div>
+	##   </div>
+	##   <div id="manaLayerProperties" class="col-sm-6 collapse">
+	##       <h4 class="font-bold txtsh">
+	##       <span class="mm_layerName">$zoo._("Layer Name")</span> <span class="pull-right"><a href="#"
+	##       	    data-toogle="tooltip" title="Close" class="menu-toggle grey"
+	##       	    onclick="\$(this).parent().parent().parent().next().toggleClass('col-sm-6');\$(this).parent().parent().parent().next().toggleClass('col-sm-12');\$(this).parent().parent().parent().hide();console.log(app);app.map().updateSize();"><i class="fa fa-close"></i></a></span></h4>
 
+	##     <ul class="nav nav-tabs" role="tablist">
+	##       $printTabHeader("mm_layer_property_display",$zoo._("Properties"),"fa-wrench",None)
+	##       $printTabHeader("mm_layer_style_display",$zoo._("Style"),"fa-image",None)
+	##       $printTabHeader("mm_layer_template_display",$zoo._("Template"),"fa-file-code-o","no-grid no-raster")
+	##       $printTabHeader("mm_layer_display_display",$zoo._("Display"),"fa-eye",None)
+	##     </ul>
+	##     <div class="tab-content">
+	##       <div role="tabpanel" class="tab-pane active" id="mm_layer_property_display">
+	## 	  #include $conf['main']['templatesPath']+"/Manager/LayerProperties_bs.html"
+	##       </div>
+	##       <div role="tabpanel" class="tab-pane" id="mm_layer_style_display">
+	## 	#include $conf['main']['templatesPath']+"/Manager/Styler_bs.html"
+	##       </div>
+	##       <div role="tabpanel" class="tab-pane" id="mm_layer_template_display">
+	## 	  #include $conf['main']['templatesPath']+"/Manager/TemplateEditor_bs.html"
+	##       </div>
+	##       <div role="tabpanel" class="tab-pane" id="mm_layer_display_display">
+	## 	  #include $conf['main']['templatesPath']+"/Manager/Display_bs.html"
+	##       </div>
+	##     </div>
+	##   </div>
+	  <div id="main" class="col-sm-12">
+      <div id="cesiumContainer"></div>
+	    ## <div id="map1">
+        ## <p>This is awesome</p>
+        ## </div>
+	    ## <div id="manaTable" class="collapse">
+	    ##   </div>
+		## <h4>
+		##   <span class="pull-right">
+		##     <a href="#" data-toogle="tooltip" title="Close"
+		##     class="menu-toggle grey"
+	    ##         onclick="\$(this).parent().parent().parent().parent().collapse('toggle');\$('#map').height((\$(window).height()-\$('nav').height()));app.map().updateSize();">
+	    ##           <i class="fa fa-close"></i>
+		##     </a>
+		##   </span>
+		## </h4>
+		## <div id="manaTableDisplay">
+		## </div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 <script src="/pm//assets/js/lib/jquery/jquery-2.1.3.min.js"></script>
 <script src="/pm//assets/js/lib/Cesium-1.94.3/Build/Cesium/Cesium.js"></script>
 <script src="/pm//assets/js/ctiles.js"></script>
-</body>
-</html>
+#end def
+
+## #def scpts
+
+## #end def
+
+## #def tfooter
+##  <div id="context-menu" style="display:none"> 
+##   <ul class="dropdown-menu">
+##     <li><a tabindex="-1" class="mm-menu" id="mmm_zoomTo"><i class="fa fa-search"></i> $zoo._("Zoom to")</a></li>
+##     <li><a tabindex="-1" class="mm-menu" id="mmm_refresh"><i class="fa fa-refresh"></i> $zoo._("Refresh")</a></li>
+##     <li><a tabindex="-1" class="mm-menu" id="mmm_properties"><i class="fa fa-wrench"></i> $zoo._("Properties")</a></li>
+##     <li><a tabindex="-1" class="mm-menu" id="mmm_query"><i class="fa fa-table"></i> $zoo._("View table")</a></li>
+##     <li><a tabindex="-1" class="mm-menu" id="mmm_remove"><i class="fa fa-trash"></i> $zoo._("Delete layer")</a></li>
+##   </ul>
+##  </div>
+
+##  <div id="context-menu-mobile" style="display:none"> 
+##   <ul class="dropdown-menu">
+##     <li><a tabindex="-1" class="mm-menu" id="mmm_zoomTo"><i class="fa fa-search"></i> $zoo._("Zoom to")</a></li>
+##     <li><a tabindex="-1" class="mm-menu" id="mmm_refresh"><i class="fa fa-refresh"></i> $zoo._("Properties")</a></li>
+##     <li><a tabindex="-1" class="mm-menu" id="mmm_properties"><i class="fa fa-wrench"></i> $zoo._("Properties")</a></li>
+##     <li><a tabindex="-1" class="mm-menu" id="mmm_query"><i class="fa fa-table"></i> $zoo._("View table")</a></li>
+##     <li><a tabindex="-1" class="mm-menu" id="mmm_remove"><i class="fa fa-trash"></i> $zoo._("Delete layer")</a></li>
+##   </ul>
+##  </div>
+
+##  <script type="template/text" id="layerswitcher_group_template">
+##    <li class="active">
+##      <div class="hidden-sm hidden-md hidden-lg mini-menu">
+##       [id]
+##       <a href="#[lid]" data-toggle="collapse">
+##        <i class="fa arrow"></i>
+##       </a>
+##      </div>
+##      <a href="#[lid]" class="hidden-xs" data-toggle="collapse">
+##       <i class="fa fa-folder"></i>
+##       [id]
+##       <i class="fa arrow"></i>
+##      </a>
+##      <ul class="nav nav-[level]-level collapse in" id="[lid]"></ul>
+##    </li>
+##  </script>
+
+##  <script type="template/text" id="layerswitcher_item_template_short">
+##    [short] <span data-placement="right" data-toggle="tooltip" title="[id]">[...]</span>
+##  </script>
+
+##  <script type="template/text" id="layerswitcher_item_template">
+##    <li class="li-layer">
+##      <div class="input-group col-sm-12">
+##        <input class="form" value="[id]" type="checkbox" />
+##        <span> [idl]</span>
+##        <span data-placement="right" data-toggle="tooltip" class="dropdown pull-right hidden-lg">
+##         <button data-toggle="dropdown" id="[id]Toggle" class="dropdown-toggle layer-cmenu btn btn-default btn-xs " href="#"><b class="caret"></b></button>
+## 	  <ul class="dropdown-menu">
+## 	      <li><a tabindex="-1" class="mm-menu" id="mmm_zoomTo"><i class="fa fa-search"></i> $zoo._("Zoom to")</a></li>
+## 	      <li><a tabindex="-1" class="mm-menu" id="mmm_properties"><i class="fa fa-wrench"></i> $zoo._("Properties")</a></li>
+## 	      <li><a tabindex="-1" class="mm-menu" id="mmm_query"><i class="fa fa-table"></i> $zoo._("View table")</a></li>
+## 	      <li><a tabindex="-1" class="mm-menu" id="mmm_remove"><i class="fa fa-trash"></i> $zoo._("Delete layer")</a></li>
+## 	  </ul>
+## 	</span>
+##      </div>
+##    </li>
+##  </script>
+
+##  <script type="template/text" id="class_styler_template">
+##    #include $conf['main']['templatesPath']+"/Manager/Styler/UniqSymb_bs.html"
+##  </script>
+
+##  <script type="template/text" id="layerOrder_template">
+##    <ul class="list-group draggable"></ul>
+##    <button class="btn btn-default">$zoo._("Save")</button>
+##  </script>
+
+##  <script type="template/text" id="layerOrder_header_template">
+##    <h4>$zoo._("Set Layer Order")</h4>
+##  </script>
+
+##  <script type="template/text" id="layerLegend_template">
+##    <ol id="layerLegend_drag" class="list-group serialization draggable"></ol>
+##    <button class="btn btn-default">$zoo._("Save")</button>
+##  </script>
+
+##  <script type="template/text" id="layerLegend_header_template">
+##    <h4>$zoo._("Organize Legend")
+##      <button id="mm_addDirToggler" class="btn btn-default" type="button" data-toggle="tooltip" title="$zoo._("Add group node")"><i class="fa fa-plus br"></i></button>
+##    </h4>
+## $printAdder({"ltype": "div","id":"mm_addDir","title":$zoo._("Add Group"),"placeholder":$zoo._("Set Group Name"),"action":{"name":"addDir","title":$zoo._("Add")}})
+##  </script>
+
+##  <script type="template/text" id="layerLegend_group_template">
+##    <li class="list-group-item0" data-id="[lid]">
+##       <i class="fa fa-folder"></i>
+##       <i class="fa fa-trash" onclick='\$(this).next().next().next().next().toggle();'></i>
+##       <i class="fa fa-edit" onclick='\$(this).next().next().toggle();'></i>
+##       <span>[id]</span>
+##       <div class="input-group" style="display:none" >
+##       <input name="g_value" value="[id]" onchange="console.log('CHANGE');\$(this).parent().parent().data('id',\$(this).val());\$(this).parent().prev().text(\$(this).val());" class="form-control" />
+##       <span class="input-group-btn"><button class="btn btn-default" type="button" href="#" onclick="\$(this).parent().parent().toggle();"><i class="fa fa-check"></i></button></span>
+##       </div>
+##       <div class="alert alert-warning" style="display:none" >
+##       <p>$zoo._("Only item with no child should be removed.")</p>
+##       <p>$zoo._("Removing a menu item is irreversible.")</p>
+##       <div class="input-group"  >
+##       <input name="group" value="[id]" class="form-control" />
+##       <span class="input-group-btn"><button class="btn btn-default" type="button" href="#" onclick="app.complex('delDir',\$(this).parent().parent())"><i class="fa fa-trash"></i></button></span>
+##       </div>
+##       </div>
+##       <ul class="nav-[level]-level collapse in" id="[lid]"></ul>
+##    </li>
+##  </script>
+
+##  <script type="template/text" id="layerLegend_item_template">
+##    <li class="list-group-item" data-id="[id]">
+##     [id]
+##    </li>
+##  </script>
+
+   
+## #end def 
+
+
+
+
+
+
+## <!doctype html>
+## <head>
+## <title>$page_title</title>
+## <link rel="stylesheet" type="text/css" href="/pm//assets/js/lib/Cesium-1.94.3/Build/Cesium/Widgets/widgets.css"></link>
+## <link rel="stylesheet" type="text/css" href="./main.css"></link>
+## </head>
+## <body>
+## <div>
+## <h3>Please enter reference number</h3>
+## <input id="refer" type="number" />
+## <button id="submit">Submit</button>
+## </div>
+## <div id="cesiumContainer"></div>
+
+
+## </body>
+## </html>

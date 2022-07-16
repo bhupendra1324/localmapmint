@@ -6,14 +6,12 @@ Cesium.Ion.defaultAccessToken =
 //   $("#name").css("color", "red");
 // };
 var viewer = new Cesium.Viewer("cesiumContainer");
-$("#submit").click(() => {
-  let num = +$("#refer").val();
-  if (num === 0) {
-    num = 1140725;
-  }
+
+$("#cesiumLoad").on("click", () => {
+  let resourceId = +$("#cesiumResource").val();
   const tileset = viewer.scene.primitives.add(
     new Cesium.Cesium3DTileset({
-      url: Cesium.IonResource.fromAssetId(num),
+      url: Cesium.IonResource.fromAssetId(resourceId),
     })
   );
 
