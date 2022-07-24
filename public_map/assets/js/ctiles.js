@@ -1,5 +1,5 @@
-Cesium.Ion.defaultAccessToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiZGU1NGNhYy1jN2MyLTQ2YTAtOTkzZS05OTUzOGZjNjliY2MiLCJpZCI6OTgyMzAsImlhdCI6MTY1NTcxMTEyNH0.c2_6dE0vgWs0lHZDfBtD4nLZpCXPCOII7gYdXjtIfao";
+// Cesium.Ion.defaultAccessToken =
+//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiZGU1NGNhYy1jN2MyLTQ2YTAtOTkzZS05OTUzOGZjNjliY2MiLCJpZCI6OTgyMzAsImlhdCI6MTY1NTcxMTEyNH0.c2_6dE0vgWs0lHZDfBtD4nLZpCXPCOII7gYdXjtIfao";
 // console.log("Hello");
 // const path = $("#path")[0].innerText;
 // window.onload = () => {
@@ -9,6 +9,10 @@ var viewer = new Cesium.Viewer("cesiumContainer");
 
 $("#cesiumLoad").on("click", () => {
   let resourceId = +$("#cesiumResource").val();
+  let token = $("#cesiumToken").val();
+  Cesium.Ion.defaultAccessToken = token;
+  // "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiZGU1NGNhYy1jN2MyLTQ2YTAtOTkzZS05OTUzOGZjNjliY2MiLCJpZCI6OTgyMzAsImlhdCI6MTY1NTcxMTEyNH0.c2_6dE0vgWs0lHZDfBtD4nLZpCXPCOII7gYdXjtIfao";
+
   const tileset = viewer.scene.primitives.add(
     new Cesium.Cesium3DTileset({
       url: Cesium.IonResource.fromAssetId(resourceId),

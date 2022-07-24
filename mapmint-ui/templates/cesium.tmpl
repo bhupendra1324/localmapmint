@@ -91,11 +91,15 @@ MapMint: $mmodule
   <a href="cesium"><i class="fa fa-cube"></i></i>  <span class="fa arrow"></span>Cesium 3</a>
        <ul class="nav nav-first-level">
      <li>
+	<div class="input-group">
+	   <input class="form-control" id="cesiumToken" type="text" placeholder="Enter Access Token" />
+    </div> 
+
        <div class="input-group">
-      <input class="form-control" id="cesiumResource" type="number" placeholder="Enter Resource ID"
-      type="text" />
+      <input class="form-control" id="cesiumResource" 
+	  type="number" placeholder="Enter Resource ID" rel="tooltip" />
       <span class="input-group-btn" title="Load" rel="tooltip">
-       <button class="btn btn-default" type="button" id="cesiumLoad">Load</button>
+       <button class="btn btn-default" style="margin-left:1rem" type="button" id="cesiumLoad">Load</button>
       </span>
     </div> 
 
