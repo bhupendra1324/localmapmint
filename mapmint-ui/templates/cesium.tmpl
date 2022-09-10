@@ -65,30 +65,9 @@ MapMint: $mmodule
 
 #def mmenu
  <ul class="nav nav-first-level collapse in">
-##   <li>
-##     <div class="input-group">
-##       <span class="input-group-btn" title="$zoo._("Open Map")" rel="tooltip">
-##        <button id="mm_loadMapToggler" class="btn btn-default" type="button" href="#mm_loadMap"><i class="fa fa-map-o br"></i> </button>
-##       </span>
-##       <input id="save-map-orig" type="hidden" value="$conf["senv"]["last_map"]" />
-##       <input class="form-control" id="save-map" placeholder="$zoo._("Map Name")"
-##       type="text" value="$conf["senv"]["last_map"]" />
-##       <span class="input-group-btn" title="$zoo._("Save Map")" rel="tooltip">
-##        <button class="btn btn-default" type="button">$zoo._("Save")</button>
-##       </span>
-##     </div>
-##   </li>
-##   <li class="active" id="mm_loadMap">
-##     <div class="input-group">
-##       <input class="form-control" id="load-map" placeholder="$zoo._("Search a Map")"
-##       type="text" />
-##       <span class="input-group-btn" title="$zoo._("Load Map")" rel="tooltip">
-##        <button class="btn btn-default disabled" type="button">$zoo._("Load")</button>
-##       </span>
-##     </div>    
-##   </li>
+
   <li class="active" id="cesiumswitcher">
-  <a href="cesium"><i class="fa fa-cube"></i></i>  <span class="fa arrow"></span>Cesium 3</a>
+  <a href="cesium"><i class="fa fa-cube"></i></i>  <span class="fa arrow"></span>3D Visualization</a>
        <ul class="nav nav-first-level">
      <li>
 	<div class="input-group">
@@ -127,66 +106,9 @@ MapMint: $mmodule
 
         <div id="manaMap" class="col-mxd-12" style="padding:2rem;margin:0;">
         
-	##   <div id="manaLayerOrder" class="col-sm-6 collapse myWell">
-	##     <ul class="nav nav-tabs" role="tablist">
-	##       $printTabHeader("mm_layer_order_display",$zoo._("Layer Order"),"mm  mm-layers-order",None)
-	##       $printTabHeader("mm_layer_legend_display",$zoo._("Legend"),"mm mm-legend",None)
-	##       <li class="pull-right">
-	##     <a href="#" data-toogle="tooltip" title="Close" class="menu-toggle grey" onclick="\$(this).parent().parent().parent().next().next().toggleClass('col-sm-6');\$(this).parent().parent().parent().next().next().toggleClass('col-sm-12');\$(this).parent().parent().parent().hide();console.log(app);app.map().updateSize();"><i class="fa fa-close"></i></a>
-	##     </li>
-	##     </ul>
-	##     <div class="tab-content">
-	##       <div role="tabpanel" class="tab-pane active" id="mm_layer_order_display">
-	##       </div>
-	##       <div role="tabpanel" class="tab-pane" id="mm_layer_legend_display">
-	##       </div>
-	##     </div>
-	##   </div>
-	##   <div id="manaLayerProperties" class="col-sm-6 collapse">
-	##       <h4 class="font-bold txtsh">
-	##       <span class="mm_layerName">$zoo._("Layer Name")</span> <span class="pull-right"><a href="#"
-	##       	    data-toogle="tooltip" title="Close" class="menu-toggle grey"
-	##       	    onclick="\$(this).parent().parent().parent().next().toggleClass('col-sm-6');\$(this).parent().parent().parent().next().toggleClass('col-sm-12');\$(this).parent().parent().parent().hide();console.log(app);app.map().updateSize();"><i class="fa fa-close"></i></a></span></h4>
-
-	##     <ul class="nav nav-tabs" role="tablist">
-	##       $printTabHeader("mm_layer_property_display",$zoo._("Properties"),"fa-wrench",None)
-	##       $printTabHeader("mm_layer_style_display",$zoo._("Style"),"fa-image",None)
-	##       $printTabHeader("mm_layer_template_display",$zoo._("Template"),"fa-file-code-o","no-grid no-raster")
-	##       $printTabHeader("mm_layer_display_display",$zoo._("Display"),"fa-eye",None)
-	##     </ul>
-	##     <div class="tab-content">
-	##       <div role="tabpanel" class="tab-pane active" id="mm_layer_property_display">
-	## 	  #include $conf['main']['templatesPath']+"/Manager/LayerProperties_bs.html"
-	##       </div>
-	##       <div role="tabpanel" class="tab-pane" id="mm_layer_style_display">
-	## 	#include $conf['main']['templatesPath']+"/Manager/Styler_bs.html"
-	##       </div>
-	##       <div role="tabpanel" class="tab-pane" id="mm_layer_template_display">
-	## 	  #include $conf['main']['templatesPath']+"/Manager/TemplateEditor_bs.html"
-	##       </div>
-	##       <div role="tabpanel" class="tab-pane" id="mm_layer_display_display">
-	## 	  #include $conf['main']['templatesPath']+"/Manager/Display_bs.html"
-	##       </div>
-	##     </div>
-	##   </div>
 	  <div id="main" class="col-sm-12">
       <div id="cesiumContainer"></div>
-	    ## <div id="map1">
-        ## <p>This is awesome</p>
-        ## </div>
-	    ## <div id="manaTable" class="collapse">
-	    ##   </div>
-		## <h4>
-		##   <span class="pull-right">
-		##     <a href="#" data-toogle="tooltip" title="Close"
-		##     class="menu-toggle grey"
-	    ##         onclick="\$(this).parent().parent().parent().parent().collapse('toggle');\$('#map').height((\$(window).height()-\$('nav').height()));app.map().updateSize();">
-	    ##           <i class="fa fa-close"></i>
-		##     </a>
-		##   </span>
-		## </h4>
-		## <div id="manaTableDisplay">
-		## </div>
+	    
 	      </div>
 	    </div>
 	  </div>
